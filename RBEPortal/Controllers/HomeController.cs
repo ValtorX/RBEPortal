@@ -1,0 +1,154 @@
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using RBEPortal.Models;
+using RBEPortalServer.Schema;
+using System.Web.Security;
+
+namespace RBEPortal.Controllers {
+    public class HomeController : Controller {
+        public ActionResult Index() {
+            ViewBag.Message = "Resource-Based Economy Portal";
+
+            return View();
+        }
+
+        public ActionResult About() {
+            return View();
+        }
+
+        public ActionResult NewSearch() {
+            return View("Index");
+        }
+
+        public ActionResult Search(MainModel model) {
+            using (var session = new RBEPortalServer.RBEPortalContext()) {
+                var userId = session.RBEPortalData.Users.Where(o => o.LoweredUserName == "valtor").Select(o => o.UserId).SingleOrDefault();
+                if (userId == Guid.Empty) {
+                    Membership.CreateUser("Valtor", "123456", "valtor.public@gmail.com");
+                    userId = session.RBEPortalData.Users.Where(o => o.LoweredUserName == "valtor").Select(o => o.UserId).Single();
+                }
+
+                if (!session.RBEPortalData.Resources.Any()) {
+                    session.RBEPortalData.Resources.Add(new Resource {
+                        ResourceId = Guid.NewGuid(),
+                        Name = "Rice",
+                        Description = "Rice bio and home grown.",
+                        Status = "active",
+                        CreationDate = DateTime.Now,
+                        ModifiedDate = DateTime.Now,
+                        ModifiedBy = userId,
+                    });
+                    session.RBEPortalData.Resources.Add(new Resource {
+                        ResourceId = Guid.NewGuid(),
+                        Name = "Corn",
+                        Description = "Corn bio and home grown.",
+                        Status = "active",
+                        CreationDate = DateTime.Now,
+                        ModifiedDate = DateTime.Now,
+                        ModifiedBy = userId,
+                    });
+                    session.RBEPortalData.Resources.Add(new Resource {
+                        ResourceId = Guid.NewGuid(),
+                        Name = "Amaranth",
+                        Description = "Amaranth bio and home grown.",
+                        Status = "active",
+                        CreationDate = DateTime.Now,
+                        ModifiedDate = DateTime.Now,
+                        ModifiedBy = userId,
+                    });
+                    session.RBEPortalData.Resources.Add(new Resource {
+                        ResourceId = Guid.NewGuid(),
+                        Name = "Barley",
+                        Description = "Barley bio and home grown.",
+                        Status = "active",
+                        CreationDate = DateTime.Now,
+                        ModifiedDate = DateTime.Now,
+                        ModifiedBy = userId,
+                    });
+                    session.RBEPortalData.Resources.Add(new Resource {
+                        ResourceId = Guid.NewGuid(),
+                        Name = "Milk",
+                        Description = "Milk bio and full fat.",
+                        Status = "active",
+                        CreationDate = DateTime.Now,
+                        ModifiedDate = DateTime.Now,
+                        ModifiedBy = userId,
+                    });
+                    session.RBEPortalData.Resources.Add(new Resource {
+                        ResourceId = Guid.NewGuid(),
+                        Name = "Shampoo",
+                        Description = "<p><span style='font-size:medium;'>Good Shampoo</span></p><p>For <strong>all</strong> <em>Hair</em> types</p><p></p>",
+                        Status = "active",
+                        CreationDate = DateTime.Now,
+                        ModifiedDate = DateTime.Now,
+                        ModifiedBy = userId,
+                    });
+                    
+                    session.RBEPortalData.SaveChanges();
+                }
+
+                if (model != null && !model.ResourceName.IsNullOrEmpty()) {
+                    model.Resources = session.RBEPortalData.Resources
+                        .Where(o => o.Name.Contains(model.ResourceName) || o.Description.Contains(model.ResourceName))
+                        .OrderBy(o => o.Name)
+                        .Include(o => o.User)
+                        .ToList();
+                    if (model.Resources.Count < 1)
+                        model.Resources = null;
+                } else {
+                    model.Resources = session.RBEPortalData.Resources
+                        .OrderBy(o => o.Name)
+                        .Include(o => o.User)
+                        .ToList();
+                }
+            }
+
+            return View("Search", model);
+        }
+
+        public ActionResult CreateResourceFromSearch(string resourceName) {
+            var model = new CreateResourceModel();
+
+            model.Name = resourceName;
+
+            return View("CreateResource", model);
+        }
+
+        public ActionResult CreateResource(CreateResourceModel model) {
+            model.Description = HttpUtility.HtmlDecode(model.Description);
+
+            Resource res;
+            using (var session = new RBEPortalServer.RBEPortalContext()) {
+                var userId = session.RBEPortalData.Users.Where(o => o.LoweredUserName == User.Identity.Name.ToLower()).Select(o => o.UserId).Single();
+
+                res = new Resource {
+                    ResourceId = Guid.NewGuid(),
+                    Name = model.Name,
+                    Description = model.Description,
+                    Status = "active",
+                    CreationDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now,
+                    ModifiedBy = userId,
+                };
+                session.RBEPortalData.Resources.Add(res);
+                session.RBEPortalData.SaveChanges();
+            }
+
+            return DisplayResource(res.ResourceId);
+        }
+
+        public ActionResult DisplayResource(Guid resourceId) {
+            var model = new DisplayResourceModel();
+
+            using (var session = new RBEPortalServer.RBEPortalContext()) {
+                model.Resource = session.RBEPortalData.Resources.Single(o => o.ResourceId == resourceId);
+            }
+
+            return View("DisplayResource", model);
+        }
+    }
+}

@@ -1,0 +1,17 @@
+﻿@model RBEPortal.Models.CreateResourceModel
+
+@{
+    Page.Title = "Resource-Based Economy Portal - Create new resource";
+
+    var form = Html.BeginForm("CreateResource", "Home");
+
+    <h3 style="margin-bottom: 10px;">Create a new resource</h3>
+
+    <div style="margin-bottom: 10px; vertical-align: top;">
+        <p>@Html.LabelFor(m => m.Name)@Html.TextBoxFor(m => m.Name)@Html.ValidationMessageFor(m => m.Name)</p>
+        <p>@Html.LabelFor(m => m.Description)@Html.Telerik().EditorFor(m => m.Description).Value(Model.Description)@Html.ValidationMessageFor(m => m.Description)</p>
+        <p><input type="submit" value="Create" style="font-size: 1em;" onclick=""/></p>
+    </div>
+
+    form.EndForm();
+}

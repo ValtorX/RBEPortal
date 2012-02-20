@@ -1,0 +1,8 @@
+Developer: Patrick Nadeau
+Site: http://rbeportal.com/
+eMail: valtor.public@gmail.com
+Location: Canada
+
+Standards: HTML5, CSS3
+Components: Modernizr, jQuery, Telerik MVC 3 Extensions
+Software: VS2010

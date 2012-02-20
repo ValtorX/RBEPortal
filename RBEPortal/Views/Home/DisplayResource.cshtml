@@ -1,0 +1,12 @@
+﻿@model RBEPortal.Models.DisplayResourceModel
+
+@{
+    Page.Title = "Resource-Based Economy Portal - Resource";
+}
+
+<h3 style="margin-bottom: 10px;">Resource</h3>
+
+<div style="margin-bottom: 10px; vertical-align: top;">
+    <p>@Html.LabelFor(m => m.Resource.Name): @Model.Resource.Name</p>
+    <p>@Html.LabelFor(m => m.Resource.Description): @Html.Raw(Model.Resource.Description)</p>
+</div>

@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="https://webdeploy.cloudsites.gearhost.com:8172/msdeploy.axd" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="rbeportal.com" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="True" msdeploySkipExtraFilesOnServer="False" msdeployMarkAsApp="False" profileName="rbeportal.com" publishMethod="MSDeploy" replaceMatchingFiles="True" userName="016760" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA/6/SIVcHuE6uJPNApVgcbQAAAAACAAAAAAAQZgAAAAEAACAAAADod1p1ryHbqxMZnwI1WXYyBYbibX4nsyA2nJt90cFMWAAAAAAOgAAAAAIAACAAAACZNqzvOMlDsdtpyGYAOJIWZrVvNm6Wi34oPrrHBKDatSAAAAACaLy2ipfAgtGZhMCwf3SBeNIG+yWgQ9uJXpStWTMF7kAAAACMa4fJZ1f2rYHRBxjtuBx1K8o4A3KLMsQFbLO8fp17la7cX5EhEUCZikiMZp7oCpive2I6A8UfT0wAP8RT+2kU" SelectedForPublish="True" />
+</publishData>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MigrationAssemblies>RBEPortalServer.dll</MigrationAssemblies>
+  </PropertyGroup>
+
+  <UsingTask AssemblyFile="Migrator.MSBuild.dll" TaskName="Migrator.MSBuild.Migrate" />
+
+  <Target Name="Migrate">
+    <Message Text="Migrating: $(MigrationAssemblies)"/>
+
+    <CreateProperty Value="-1"  Condition="'$(SchemaVersion)'==''">
+      <Output TaskParameter="Value" PropertyName="SchemaVersion"/>
+    </CreateProperty>
+
+    <Migrate Provider="SqlServer"
+        ConnectionString="Data Source=$(ServerName);Initial Catalog=$(DatabaseName);$(SQLAutentication)"
+        SchemaInfoTableName="SchemaInfo.RBEPortal"
+        Migrations="$(MigrationAssemblies)"
+        To="$(SchemaVersion)"/>
+  </Target>
+</Project>

@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RBEPortalServer", "..\RBEPortalServer\RBEPortalServer.csproj", "{BFF1EC3E-A0E4-4A9A-A791-5236F2164EC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RBEPortal", "..\RBEPortal\RBEPortal.csproj", "{D92722DF-C85C-4EE2-987F-6F879A0ADCCD}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = RBEPortalServer.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BFF1EC3E-A0E4-4A9A-A791-5236F2164EC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFF1EC3E-A0E4-4A9A-A791-5236F2164EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFF1EC3E-A0E4-4A9A-A791-5236F2164EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFF1EC3E-A0E4-4A9A-A791-5236F2164EC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D92722DF-C85C-4EE2-987F-6F879A0ADCCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D92722DF-C85C-4EE2-987F-6F879A0ADCCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D92722DF-C85C-4EE2-987F-6F879A0ADCCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D92722DF-C85C-4EE2-987F-6F879A0ADCCD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
