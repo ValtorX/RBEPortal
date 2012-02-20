@@ -4,9 +4,82 @@
     Page.Title = "Resource-Based Economy Portal - Resource";
 }
 
-<h3 style="margin-bottom: 10px;">Resource</h3>
+<h2 style="margin-bottom: 10px;">@Model.Resource.Name</h2>
 
 <div style="margin-bottom: 10px; vertical-align: top;">
-    <p>@Html.LabelFor(m => m.Resource.Name): @Model.Resource.Name</p>
-    <p>@Html.LabelFor(m => m.Resource.Description): @Html.Raw(Model.Resource.Description)</p>
+    <h4>Description</h4>
+    <p>@Html.Raw(Model.Resource.Description)</p>
+</div>
+<div style="margin-bottom: 20px; vertical-align: top;">
+    <input type="button" value="Request"  style="padding: 3px 8px 3px 8px; min-width: 100px;" />
+    <input type="button" value="Share"  style="padding: 3px 8px 3px 8px; min-width: 100px;" />
+    <input type="button" value="Sponsor"  style="padding: 3px 8px 3px 8px; min-width: 100px;" />
+</div>
+<div style="margin-bottom: 10px; vertical-align: top;">
+    <div style="margin-bottom: 10px; vertical-align: top;">
+        <h4>Requests</h4>
+    </div>
+    <div style="margin: 10px 0 20px 0; vertical-align: top;">
+    @{
+        if (Model != null && Model.Requests != null) {
+            Html.Telerik().Grid(Model.Requests)
+                .Name("Requests")
+                .DataKeys(k => k.Add(c => c.ResourceId))
+                .Columns(c => {
+                    c.Bound(b => b.ResourceId).Hidden();
+                    c.Bound(b => b.Name).Template(t => Html.ActionLink(t.Name, "DisplayResource", "Home", new { resourceId = t.ResourceId }, null));
+                    c.Bound(b => b.Description).Encoded(false);
+                    c.Bound(b => b.User.UserName).Title("Last Modified By");
+                    c.Bound(b => b.ModifiedDate);
+                })
+                .Render();
+        } else {
+            <h5>There are currently no requests for this resource.</h5>
+        }
+    }
+    </div>
+    <div style="margin-bottom: 10px; vertical-align: top;">
+        <h4>Locations</h4>
+    </div>
+    <div style="margin: 10px 0 20px 0; vertical-align: top;">
+    @{
+        if (Model != null && Model.Shared != null) {
+            Html.Telerik().Grid(Model.Shared)
+                .Name("Shared")
+                .DataKeys(k => k.Add(c => c.ResourceId))
+                .Columns(c => {
+                    c.Bound(b => b.ResourceId).Hidden();
+                    c.Bound(b => b.Name).Template(t => Html.ActionLink(t.Name, "DisplayResource", "Home", new { resourceId = t.ResourceId }, null));
+                    c.Bound(b => b.Description).Encoded(false);
+                    c.Bound(b => b.User.UserName).Title("Last Modified By");
+                    c.Bound(b => b.ModifiedDate);
+                })
+                .Render();
+        } else {
+            <h5>This resource is not currently available anywhere.</h5>
+        }
+    }
+    </div>
+    <div style="margin-bottom: 10px; vertical-align: top;">
+        <h4>Sponsors</h4>
+    </div>
+    <div style="margin: 10px 0 20px 0; vertical-align: top;">
+    @{
+        if (Model != null && Model.Sponsors != null) {
+            Html.Telerik().Grid(Model.Sponsors)
+                .Name("Shared")
+                .DataKeys(k => k.Add(c => c.ResourceId))
+                .Columns(c => {
+                    c.Bound(b => b.ResourceId).Hidden();
+                    c.Bound(b => b.Name).Template(t => Html.ActionLink(t.Name, "DisplayResource", "Home", new { resourceId = t.ResourceId }, null));
+                    c.Bound(b => b.Description).Encoded(false);
+                    c.Bound(b => b.User.UserName).Title("Last Modified By");
+                    c.Bound(b => b.ModifiedDate);
+                })
+                .Render();
+        } else {
+            <h5>This resource is not currently sponsored.</h5>
+        }
+    }
+    </div>
 </div>

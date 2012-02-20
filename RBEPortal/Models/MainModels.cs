@@ -30,5 +30,11 @@ namespace RBEPortal.Models {
 
     public class DisplayResourceModel {
         public Resource Resource { get; set; }
+
+        public List<Resource> Requests { get; set; }
+
+        public List<Resource> Shared { get; set; }
+
+        public List<Resource> Sponsors { get; set; }
     }
 }

@@ -16,7 +16,7 @@
     
     if (Model != null && Model.Resources != null) {
         Html.Telerik().Grid(Model.Resources)
-            .Name("test")
+            .Name("Resources")
             .DataKeys(k => k.Add(c => c.ResourceId))
             .Columns(c => {
                 c.Bound(b => b.ResourceId).Hidden();

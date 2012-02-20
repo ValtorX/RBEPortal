@@ -119,6 +119,9 @@ namespace RBEPortal.Controllers {
         }
 
         public ActionResult CreateResource(CreateResourceModel model) {
+            if (!User.Identity.IsAuthenticated)
+                return View("NotLogged");
+
             model.Description = HttpUtility.HtmlDecode(model.Description);
 
             Resource res;
