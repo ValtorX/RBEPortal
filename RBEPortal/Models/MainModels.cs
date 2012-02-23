@@ -28,6 +28,19 @@ namespace RBEPortal.Models {
         public string Description { get; set; }
     }
 
+    public class EditResourceModel {
+        public Guid Id { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [DataType(DataType.Text)]
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+    }
+
     public class DisplayResourceModel {
         public Resource Resource { get; set; }
 

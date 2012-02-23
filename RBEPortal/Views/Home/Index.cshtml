@@ -13,6 +13,7 @@
 <h3 style="margin-bottom: 10px;">Search for a resource</h3>
 
 <div style="margin-bottom: 10px; vertical-align: top;">
+    <div style="font-size: 0.8em;">Leave empty to list all resources.</div>
     @Html.Telerik().AutoCompleteFor(m => m.ResourceName).HtmlAttributes(new { style = "width: 50%;" })
     <input type="submit" value="Search" style="font-size: 1em;"/>
 </div>

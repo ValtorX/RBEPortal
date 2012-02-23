@@ -367,3 +367,7 @@ div#title {
 .tri-state {
     width: 6em;
 }
+
+.button {
+    padding: 3px 8px 3px 8px;
+}

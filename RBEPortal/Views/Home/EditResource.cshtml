@@ -1,0 +1,18 @@
+﻿@model RBEPortal.Models.EditResourceModel
+
+@{
+    Page.Title = "Resource-Based Economy Portal - Edit resource";
+
+    var form = Html.BeginForm("SaveResource", "Home");
+    @Html.HiddenFor(m => m.Id)
+    
+    <h3 style="margin-bottom: 10px;">Edit a resource</h3>
+
+    <div style="margin-bottom: 10px; vertical-align: top;">
+        <p>@Html.LabelFor(m => m.Name)@Html.TextBoxFor(m => m.Name)@Html.ValidationMessageFor(m => m.Name)</p>
+        <p>@Html.LabelFor(m => m.Description)@Html.Telerik().EditorFor(m => m.Description).Value(Model.Description)@Html.ValidationMessageFor(m => m.Description)</p>
+        <p><input type="submit" value="Save" style="font-size: 1em;" onclick=""/></p>
+    </div>
+
+    form.EndForm();
+}

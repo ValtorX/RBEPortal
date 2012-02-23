@@ -28,7 +28,7 @@
     <ExcludeApp_Data>true</ExcludeApp_Data>
     <PublishDatabases>false</PublishDatabases>
     <DeployIisAppPath>Default Web Site/</DeployIisAppPath>
-    <DesktopBuildPackageLocation>RBEPortal.zip</DesktopBuildPackageLocation>
+    <DesktopBuildPackageLocation>obj\RBEPortalDebug.zip</DesktopBuildPackageLocation>
     <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -39,7 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
-    <DeployIisAppPath>Default Web Site</DeployIisAppPath>
+    <DeployIisAppPath>Default Web Site/</DeployIisAppPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <includesetaclproviderondestination>False</includesetaclproviderondestination>
     <PublishDatabases>false</PublishDatabases>
@@ -49,6 +49,7 @@
       </Objects>
     </PublishDatabaseSettings>
     <ExcludeApp_Data>true</ExcludeApp_Data>
+    <DesktopBuildPackageLocation>obj\RBEPortal.zip</DesktopBuildPackageLocation>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Core, Version=4.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -622,6 +623,7 @@
     <Content Include="Views\Home\CreateResource.cshtml" />
     <Content Include="Views\Home\DisplayResource.cshtml" />
     <Content Include="Views\Home\NotLogged.cshtml" />
+    <Content Include="Views\Home\EditResource.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="404.html" />

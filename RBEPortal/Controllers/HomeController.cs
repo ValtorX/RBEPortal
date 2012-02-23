@@ -93,7 +93,8 @@ namespace RBEPortal.Controllers {
 
                 if (model != null && !model.ResourceName.IsNullOrEmpty()) {
                     model.Resources = session.RBEPortalData.Resources
-                        .Where(o => o.Name.Contains(model.ResourceName) || o.Description.Contains(model.ResourceName))
+                        .Where(o => (o.Name.Contains(model.ResourceName) || o.Description.Contains(model.ResourceName)) &&
+                                    o.Status == "active")
                         .OrderBy(o => o.Name)
                         .Include(o => o.User)
                         .ToList();
@@ -101,6 +102,7 @@ namespace RBEPortal.Controllers {
                         model.Resources = null;
                 } else {
                     model.Resources = session.RBEPortalData.Resources
+                        .Where(o => o.Status == "active")
                         .OrderBy(o => o.Name)
                         .Include(o => o.User)
                         .ToList();
@@ -152,6 +154,59 @@ namespace RBEPortal.Controllers {
             }
 
             return View("DisplayResource", model);
+        }
+
+        public ActionResult EditResource(Guid resourceId) {
+            var model = new EditResourceModel();
+            model.Id = resourceId;
+
+            using (var session = new RBEPortalServer.RBEPortalContext()) {
+                var resource = session.RBEPortalData.Resources.Single(o => o.ResourceId == resourceId);
+                model.Name = resource.Name;
+                model.Description = resource.Description;
+            }
+
+            return View("EditResource", model);
+        }
+
+        public ActionResult SaveResource(EditResourceModel model) {
+            if (!User.Identity.IsAuthenticated)
+                return View("NotLogged");
+
+            model.Description = HttpUtility.HtmlDecode(model.Description);
+
+            using (var session = new RBEPortalServer.RBEPortalContext()) {
+                var userId = session.RBEPortalData.Users.Where(o => o.LoweredUserName == User.Identity.Name.ToLower()).Select(o => o.UserId).Single();
+                var resource = session.RBEPortalData.Resources.Single(o => o.ResourceId == model.Id);
+
+                resource.Name = model.Name;
+                resource.Description = model.Description;
+                resource.ModifiedDate = DateTime.Now;
+                resource.ModifiedBy = userId;
+
+                //session.RBEPortalData.Resources.Add(res);
+                session.RBEPortalData.SaveChanges();
+            }
+
+            return DisplayResource(model.Id);
+        }
+
+        public ActionResult DeleteResource(Guid resourceId) {
+            if (!User.Identity.IsAuthenticated)
+                return View("NotLogged");
+
+            using (var session = new RBEPortalServer.RBEPortalContext()) {
+                var userId = session.RBEPortalData.Users.Where(o => o.LoweredUserName == User.Identity.Name.ToLower()).Select(o => o.UserId).Single();
+                var resource = session.RBEPortalData.Resources.Single(o => o.ResourceId == resourceId);
+
+                resource.Status = "deleted";
+                resource.ModifiedDate = DateTime.Now;
+                resource.ModifiedBy = userId;
+
+                session.RBEPortalData.SaveChanges();
+            }
+
+            return NewSearch();
         }
     }
 }

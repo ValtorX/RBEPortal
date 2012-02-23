@@ -11,9 +11,9 @@
     <p>@Html.Raw(Model.Resource.Description)</p>
 </div>
 <div style="margin-bottom: 20px; vertical-align: top;">
-    <input type="button" value="Request"  style="padding: 3px 8px 3px 8px; min-width: 100px;" />
-    <input type="button" value="Share"  style="padding: 3px 8px 3px 8px; min-width: 100px;" />
-    <input type="button" value="Sponsor"  style="padding: 3px 8px 3px 8px; min-width: 100px;" />
+    <input type="button" name="buttonRequest" value="Request" class="button" style="min-width: 100px;" onclick="alert('This feature is not ready yet.');" />
+    <input type="button" name="buttonShare" value="Share" class="button" style="min-width: 100px;" onclick="alert('This feature is not ready yet.');" />
+    <input type="button" name="buttonSponsor" value="Sponsor" class="button" style="min-width: 100px;" onclick="alert('This feature is not ready yet.');" />
 </div>
 <div style="margin-bottom: 10px; vertical-align: top;">
     <div style="margin-bottom: 10px; vertical-align: top;">
@@ -81,5 +81,12 @@
             <h5>This resource is not currently sponsored.</h5>
         }
     }
+    </div>
+    <div style="margin: 40px 0 20px 0; vertical-align: top;">
+        <span>
+            @Html.ActionLink("Edit this resource", "EditResource", "Home", new { resourceId = Model.Resource.ResourceId }, null)
+            |
+            @Html.ActionLink("Delete this resource", "DeleteResource", "Home", new { resourceId = Model.Resource.ResourceId }, null)
+        </span>
     </div>
 </div>
