@@ -112,7 +112,10 @@ namespace RBEPortal.Controllers {
             return View("Search", model);
         }
 
-        public ActionResult CreateResourceFromSearch(string resourceName) {
+        public ActionResult CreateResource(string resourceName) {
+            if (!User.Identity.IsAuthenticated)
+                return View("NotLogged");
+
             var model = new CreateResourceModel();
 
             model.Name = resourceName;
@@ -120,7 +123,7 @@ namespace RBEPortal.Controllers {
             return View("CreateResource", model);
         }
 
-        public ActionResult CreateResource(CreateResourceModel model) {
+        public ActionResult SaveNewResource(CreateResourceModel model) {
             if (!User.Identity.IsAuthenticated)
                 return View("NotLogged");
 

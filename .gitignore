@@ -10,3 +10,5 @@ TestResults
 *.suo
 *.user
 *.docstates
+/RBEPortalServer/UpdateRBEPortal_PROD_RBEPortal.cmd
+/RBEPortal/Web.Release.config

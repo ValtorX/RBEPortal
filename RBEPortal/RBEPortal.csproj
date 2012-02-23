@@ -529,6 +529,7 @@
     <Content Include="img\ico_tag.png" />
     <Content Include="img\in_ico.png" />
     <Content Include="img\logo_en.png" />
+    <Content Include="img\logo_en_w_bg.png" />
     <Content Include="img\main_bg.png" />
     <Content Include="img\menu_bg.png" />
     <Content Include="img\nav_link_bg.png" />
