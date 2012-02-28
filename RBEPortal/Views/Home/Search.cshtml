@@ -2,7 +2,7 @@
 
 @{
     Page.Title = "Resource-Based Economy Portal - Search";
-    
+
     var form = Html.BeginForm("Search", "Home");
 
     <h3 style="margin-bottom: 10px;">Search for a resource</h3>
@@ -14,7 +14,7 @@
     </div>
 
     form.EndForm();
-    
+
     if (Model != null && Model.Resources != null) {
         Html.Telerik().Grid(Model.Resources)
             .Name("Resources")
@@ -23,17 +23,24 @@
                 c.Bound(b => b.ResourceId).Hidden();
                 c.Bound(b => b.Name).Template(t => Html.ActionLink(t.Name, "DisplayResource", "Home", new { resourceId = t.ResourceId }, null));
                 c.Bound(b => b.Description).Encoded(false);
-                c.Bound(b => b.User.UserName).Title("Last Modified By");
+                c.Bound(b => b.ModifiedByUser.UserName).Title("Last Modified By");
                 c.Bound(b => b.ModifiedDate);
             })
             .Render();
-        <div style="margin: 40px 0 20px 0; vertical-align: top;">
-            @Html.ActionLink("Add a new resource", "CreateResource", "Home")
-        </div>
+        if (Request.IsAuthenticated) {
+            <div style="margin: 40px 0 20px 0; vertical-align: top;">
+                @Html.ActionLink("Add a new resource", "CreateResource", "Home")
+            </div>
+        }
     } else {
-        <h4>No resources found for @Model.ResourceName</h4>
-        <p>Would you like to create a new resource named @Model.ResourceName or would you prefer to do a new search ?</p>
-        <p>@Html.ActionLink("Do a new search.", "../")</p>
-        <p>@Html.ActionLink(String.Format("Create a new resource named {0}.", Model.ResourceName), "CreateResource", "Home", new { resourceName = Model.ResourceName }, null)</p>
+        if (Request.IsAuthenticated) {
+            <h4>No resources found for @Model.ResourceName</h4>
+            <p>Would you like to create a new resource named @Model.ResourceName or would you prefer to do a new search ?</p>
+            <p>@Html.ActionLink("Do a new search.", "../")</p>
+            <p>@Html.ActionLink(String.Format("Create a new resource named {0}.", Model.ResourceName), "CreateResource", "Home", new { resourceName = Model.ResourceName }, null)</p>
+        } else {
+            <h4>No resources found for @Model.ResourceName</h4>
+            <p>@Html.ActionLink("Do a new search.", "../")</p>
+        }
     }
 }

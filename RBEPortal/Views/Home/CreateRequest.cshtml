@@ -1,0 +1,19 @@
+﻿@model RBEPortal.Models.RequestModel
+
+@{
+    Page.Title = "Resource-Based Economy Portal - Request a resource";
+
+    var form = Html.BeginForm("SaveRequest", "Home");
+
+    <h3 style="margin-bottom: 10px;">Request @Model.Request.Resource.Name</h3>
+
+    <div style="margin-bottom: 10px; vertical-align: top;">
+        @Html.HiddenFor(m => m.Request.ResourceId)
+        <p>Amount @Html.TextBoxFor(m => m.Request.Amount)@Html.ValidationMessageFor(m => m.Request.Amount)</p>
+        <p>Unit of measurement @Html.TextBoxFor(m => m.Request.UoM)@Html.ValidationMessageFor(m => m.Request.UoM)</p>
+        <p>Location @Html.Telerik().EditorFor(m => m.Request.Location)@Html.ValidationMessageFor(m => m.Request.Location)</p>
+        <p><input type="submit" value="Save" style="font-size: 1em;" onclick=""/></p>
+    </div>
+
+    form.EndForm();
+}

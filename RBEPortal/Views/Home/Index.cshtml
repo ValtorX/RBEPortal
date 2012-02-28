@@ -17,8 +17,10 @@
     @Html.Telerik().AutoCompleteFor(m => m.ResourceName).HtmlAttributes(new { style = "width: 50%;" })
     <input type="submit" value="Search" style="font-size: 1em;"/>
 </div>
-<div style="margin: 40px 0 20px 0; vertical-align: top;">
-    @Html.ActionLink("Add a new resource", "CreateResource", "Home")
-</div>
+@if (Request.IsAuthenticated) {
+    <div style="margin: 40px 0 20px 0; vertical-align: top;">
+        @Html.ActionLink("Add a new resource", "CreateResource", "Home")
+    </div>
+}
 
 @{form.EndForm();}

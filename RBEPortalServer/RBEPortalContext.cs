@@ -62,7 +62,9 @@ namespace RBEPortalServer {
             _SharedConnection = new System.Data.SqlClient.SqlConnection(Settings.ConnectionString);
 
             base.CoreData = new CoreData(new System.Data.EntityClient.EntityConnection(core.GetMetadataWorkspace(), _SharedConnection), false);
+            base.CoreData.ObjectContext.ContextOptions.ProxyCreationEnabled = false;
             _RBEPortalData = new Schema.RBEPortalData(new System.Data.EntityClient.EntityConnection(portal.GetMetadataWorkspace(), _SharedConnection), false);
+            _RBEPortalData.ObjectContext.ContextOptions.ProxyCreationEnabled = false;
         }
 
         private Schema.RBEPortalData _RBEPortalData;

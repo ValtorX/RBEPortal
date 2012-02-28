@@ -1870,6 +1870,14 @@
             Gets the service process installer.
             </summary>
         </member>
+        <member name="M:Core.Schema.ApplicationParameterValue.ChangeType(System.Object,System.Type)">
+            <summary>
+            Change type.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="type">The type.</param>
+            <returns>A System.Object.</returns>
+        </member>
         <member name="T:Core.Tools.UriUtil">
             <summary>
             Utility class for Uri.
@@ -2330,14 +2338,6 @@
             <returns>An Assembly.</returns>
             <remarks>If the assembly to find is not in the current domain, the method will load
              it but will not include it in the current domain.</remarks>
-        </member>
-        <member name="M:Core.Schema.ApplicationParameterValue.ChangeType(System.Object,System.Type)">
-            <summary>
-            Change type.
-            </summary>
-            <param name="value">The value.</param>
-            <param name="type">The type.</param>
-            <returns>A System.Object.</returns>
         </member>
         <member name="T:System.DbCommandExtensions">
             <summary>

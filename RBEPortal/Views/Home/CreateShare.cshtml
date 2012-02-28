@@ -1,0 +1,19 @@
+﻿@model RBEPortal.Models.ShareModel
+
+@{
+    Page.Title = "Resource-Based Economy Portal - Share a resource";
+
+    var form = Html.BeginForm("SaveShare", "Home");
+
+    <h3 style="margin-bottom: 10px;">Share @Model.Share.Resource.Name</h3>
+
+    <div style="margin-bottom: 10px; vertical-align: top;">
+        @Html.HiddenFor(m => m.Share.ResourceId)
+        <p>Amount @Html.TextBoxFor(m => m.Share.Amount)@Html.ValidationMessageFor(m => m.Share.Amount)</p>
+        <p>Unit of measurement @Html.TextBoxFor(m => m.Share.UoM)@Html.ValidationMessageFor(m => m.Share.UoM)</p>
+        <p>Location @Html.Telerik().EditorFor(m => m.Share.Location)@Html.ValidationMessageFor(m => m.Share.Location)</p>
+        <p><input type="submit" value="Save" style="font-size: 1em;" onclick=""/></p>
+    </div>
+
+    form.EndForm();
+}

@@ -10,27 +10,35 @@
     <h4>Description</h4>
     <p>@Html.Raw(Model.Resource.Description)</p>
 </div>
-<div style="margin-bottom: 20px; vertical-align: top;">
-    <input type="button" name="buttonRequest" value="Request" class="button" style="min-width: 100px;" onclick="alert('This feature is not ready yet.');" />
-    <input type="button" name="buttonShare" value="Share" class="button" style="min-width: 100px;" onclick="alert('This feature is not ready yet.');" />
-    <input type="button" name="buttonSponsor" value="Sponsor" class="button" style="min-width: 100px;" onclick="alert('This feature is not ready yet.');" />
-</div>
+@if (Request.IsAuthenticated) {
+    <div style="margin-bottom: 20px; vertical-align: top;">
+        <input type="button" name="buttonRequest" value="Request" class="button" style="min-width: 100px;" onclick="location.href='@Url.Action("NewRequest", "Home", new { resourceId = Model.Resource.ResourceId }, null)'" />
+        <input type="button" name="buttonShare" value="Share" class="button" style="min-width: 100px;" onclick="location.href='@Url.Action("NewShare", "Home", new { resourceId = Model.Resource.ResourceId }, null)'" />
+        <input type="button" name="buttonSponsor" value="Sponsor" class="button" style="min-width: 100px;" onclick="alert('This feature is not ready yet.');" />
+    </div>
+}
 <div style="margin-bottom: 10px; vertical-align: top;">
     <div style="margin-bottom: 10px; vertical-align: top;">
         <h4>Requests</h4>
     </div>
     <div style="margin: 10px 0 20px 0; vertical-align: top;">
     @{
-        if (Model != null && Model.Requests != null) {
-            Html.Telerik().Grid(Model.Requests)
+        if (Model != null && Model.Resource != null && Model.Resource.Requests != null && Model.Resource.Requests.Count > 0) {
+            Html.Telerik().Grid(Model.Resource.Requests)
                 .Name("Requests")
-                .DataKeys(k => k.Add(c => c.ResourceId))
+                .DataKeys(k => k.Add(c => c.RequestId))
                 .Columns(c => {
-                    c.Bound(b => b.ResourceId).Hidden();
-                    c.Bound(b => b.Name).Template(t => Html.ActionLink(t.Name, "DisplayResource", "Home", new { resourceId = t.ResourceId }, null));
-                    c.Bound(b => b.Description).Encoded(false);
-                    c.Bound(b => b.User.UserName).Title("Last Modified By");
+                    c.Bound(b => b.RequestId).Hidden();
+                    c.Bound(b => b.Location).Encoded(false);
+                    c.Bound(b => b.Amount);
+                    c.Bound(b => b.UoM).Title("Unit of measurement");
+                    c.Bound(b => b.User.UserName).Title("Requested By");
                     c.Bound(b => b.ModifiedDate);
+                    c.Bound(b => b.User.UserName).Title("").Template(t => {
+                        if (Context.User.Identity.Name == t.User.UserName)
+                            return Html.ActionLink("delete", "DeleteRequest", "Home", new { requestId = t.RequestId }, null);
+                        return "";
+                    });
                 })
                 .Render();
         } else {
@@ -39,20 +47,26 @@
     }
     </div>
     <div style="margin-bottom: 10px; vertical-align: top;">
-        <h4>Locations</h4>
+        <h4>Available at</h4>
     </div>
     <div style="margin: 10px 0 20px 0; vertical-align: top;">
     @{
-        if (Model != null && Model.Shared != null) {
-            Html.Telerik().Grid(Model.Shared)
+        if (Model != null && Model.Resource != null && Model.Resource.Shares != null && Model.Resource.Shares.Count > 0) {
+            Html.Telerik().Grid(Model.Resource.Shares)
                 .Name("Shared")
-                .DataKeys(k => k.Add(c => c.ResourceId))
+                .DataKeys(k => k.Add(c => c.ShareId))
                 .Columns(c => {
-                    c.Bound(b => b.ResourceId).Hidden();
-                    c.Bound(b => b.Name).Template(t => Html.ActionLink(t.Name, "DisplayResource", "Home", new { resourceId = t.ResourceId }, null));
-                    c.Bound(b => b.Description).Encoded(false);
-                    c.Bound(b => b.User.UserName).Title("Last Modified By");
+                    c.Bound(b => b.ShareId).Hidden();
+                    c.Bound(b => b.Location).Encoded(false);
+                    c.Bound(b => b.Amount);
+                    c.Bound(b => b.UoM).Title("Unit of measurement");
+                    c.Bound(b => b.User.UserName).Title("Shared By");
                     c.Bound(b => b.ModifiedDate);
+                    c.Bound(b => b.User.UserName).Title("").Template(t => {
+                        if (Context.User.Identity.Name == t.User.UserName)
+                            return Html.ActionLink("delete", "DeleteShare", "Home", new { shareId = t.ShareId }, null);
+                        return "";
+                    });
                 })
                 .Render();
         } else {
@@ -73,7 +87,7 @@
                     c.Bound(b => b.ResourceId).Hidden();
                     c.Bound(b => b.Name).Template(t => Html.ActionLink(t.Name, "DisplayResource", "Home", new { resourceId = t.ResourceId }, null));
                     c.Bound(b => b.Description).Encoded(false);
-                    c.Bound(b => b.User.UserName).Title("Last Modified By");
+                    c.Bound(b => b.ModifiedByUser.UserName).Title("Last Modified By");
                     c.Bound(b => b.ModifiedDate);
                 })
                 .Render();
@@ -82,11 +96,15 @@
         }
     }
     </div>
-    <div style="margin: 40px 0 20px 0; vertical-align: top;">
-        <span>
-            @Html.ActionLink("Edit this resource", "EditResource", "Home", new { resourceId = Model.Resource.ResourceId }, null)
-            |
-            @Html.ActionLink("Delete this resource", "DeleteResource", "Home", new { resourceId = Model.Resource.ResourceId }, null)
-        </span>
-    </div>
+    @{
+        if (Context.User.Identity.Name == Model.Resource.ModifiedByUser.UserName) {
+            <div style="margin: 40px 0 20px 0; vertical-align: top;">
+                <span>
+                    @Html.ActionLink("Edit this resource", "EditResource", "Home", new { resourceId = Model.Resource.ResourceId }, null)
+                    |
+                    @Html.ActionLink("Delete this resource", "DeleteResource", "Home", new { resourceId = Model.Resource.ResourceId }, null)
+                </span>
+            </div>
+        }
+    }
 </div>

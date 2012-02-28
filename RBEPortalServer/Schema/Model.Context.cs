@@ -22,6 +22,7 @@ namespace RBEPortalServer.Schema
         public RBEPortalData(bool proxyCreationEnabled)	    
             : base("name=RBEPortalData")
         {
+            this.Configuration.LazyLoadingEnabled = false;
             this.Configuration.ProxyCreationEnabled = proxyCreationEnabled;
         }
     
@@ -31,6 +32,7 @@ namespace RBEPortalServer.Schema
         public RBEPortalData(string connectionString, bool proxyCreationEnabled)
             : base(connectionString)
         {
+            this.Configuration.LazyLoadingEnabled = false;
             this.Configuration.ProxyCreationEnabled = proxyCreationEnabled;
         }	
     
@@ -56,5 +58,7 @@ namespace RBEPortalServer.Schema
         public DbSet<aspnet_WebEvent_Events> aspnet_WebEvent_Events { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<Resource> Resources { get; set; }
+        public DbSet<Request> Requests { get; set; }
+        public DbSet<Share> Shares { get; set; }
     }
 }

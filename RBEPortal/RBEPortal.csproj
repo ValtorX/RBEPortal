@@ -625,6 +625,8 @@
     <Content Include="Views\Home\DisplayResource.cshtml" />
     <Content Include="Views\Home\NotLogged.cshtml" />
     <Content Include="Views\Home\EditResource.cshtml" />
+    <Content Include="Views\Home\CreateRequest.cshtml" />
+    <Content Include="Views\Home\CreateShare.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="404.html" />

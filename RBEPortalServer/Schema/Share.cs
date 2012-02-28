@@ -16,22 +16,21 @@ namespace RBEPortalServer.Schema
 {
     [DataContract(IsReference = true)]
     [KnownType(typeof(User))]
-    [KnownType(typeof(Request))]
-    [KnownType(typeof(Share))]
-    public partial class Resource
+    [KnownType(typeof(Resource))]
+    public partial class Share
     {
-        public Resource()
-        {
-            this.Requests = new HashSet<Request>();
-            this.Shares = new HashSet<Share>();
-        }
-    
+        [DataMember]
+        public System.Guid ShareId { get; set; }
         [DataMember]
         public System.Guid ResourceId { get; set; }
         [DataMember]
-        public string Name { get; set; }
+        public System.Guid UserId { get; set; }
         [DataMember]
-        public string Description { get; set; }
+        public string Location { get; set; }
+        [DataMember]
+        public double Amount { get; set; }
+        [DataMember]
+        public string UoM { get; set; }
         [DataMember]
         public string Status { get; set; }
         [DataMember]
@@ -44,9 +43,9 @@ namespace RBEPortalServer.Schema
         [DataMember]
         public virtual User ModifiedByUser { get; set; }
         [DataMember]
-        public virtual ICollection<Request> Requests { get; set; }
+        public virtual User User { get; set; }
         [DataMember]
-        public virtual ICollection<Share> Shares { get; set; }
+        public virtual Resource Resource { get; set; }
     }
     
 }

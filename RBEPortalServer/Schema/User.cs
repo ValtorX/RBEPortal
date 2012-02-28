@@ -22,14 +22,20 @@ namespace RBEPortalServer.Schema
     [KnownType(typeof(Log))]
     [KnownType(typeof(Resource))]
     [KnownType(typeof(aspnet_Roles))]
+    [KnownType(typeof(Request))]
+    [KnownType(typeof(Share))]
     public partial class User
     {
         public User()
         {
-            this.aspnet_PersonalizationPerUser = new HashSet<aspnet_PersonalizationPerUser>();
+            this.PersonalizationPerUser = new HashSet<aspnet_PersonalizationPerUser>();
             this.Logs = new HashSet<Log>();
-            this.Resources = new HashSet<Resource>();
-            this.aspnet_Roles = new HashSet<aspnet_Roles>();
+            this.ModifiedResources = new HashSet<Resource>();
+            this.Roles = new HashSet<aspnet_Roles>();
+            this.ModifiedRequests = new HashSet<Request>();
+            this.Requests = new HashSet<Request>();
+            this.ModifiedShares = new HashSet<Share>();
+            this.Shares = new HashSet<Share>();
         }
     
         [DataMember]
@@ -48,19 +54,27 @@ namespace RBEPortalServer.Schema
         public System.DateTime LastActivityDate { get; set; }
     
         [DataMember]
-        public virtual aspnet_Applications aspnet_Applications { get; set; }
+        public virtual aspnet_Applications Applications { get; set; }
         [DataMember]
-        public virtual aspnet_Membership aspnet_Membership { get; set; }
+        public virtual aspnet_Membership Membership { get; set; }
         [DataMember]
-        public virtual ICollection<aspnet_PersonalizationPerUser> aspnet_PersonalizationPerUser { get; set; }
+        public virtual ICollection<aspnet_PersonalizationPerUser> PersonalizationPerUser { get; set; }
         [DataMember]
-        public virtual aspnet_Profile aspnet_Profile { get; set; }
+        public virtual aspnet_Profile Profile { get; set; }
         [DataMember]
         public virtual ICollection<Log> Logs { get; set; }
         [DataMember]
-        public virtual ICollection<Resource> Resources { get; set; }
+        public virtual ICollection<Resource> ModifiedResources { get; set; }
         [DataMember]
-        public virtual ICollection<aspnet_Roles> aspnet_Roles { get; set; }
+        public virtual ICollection<aspnet_Roles> Roles { get; set; }
+        [DataMember]
+        public virtual ICollection<Request> ModifiedRequests { get; set; }
+        [DataMember]
+        public virtual ICollection<Request> Requests { get; set; }
+        [DataMember]
+        public virtual ICollection<Share> ModifiedShares { get; set; }
+        [DataMember]
+        public virtual ICollection<Share> Shares { get; set; }
     }
     
 }

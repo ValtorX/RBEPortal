@@ -96,7 +96,7 @@ namespace RBEPortal.Controllers {
                         .Where(o => (o.Name.Contains(model.ResourceName) || o.Description.Contains(model.ResourceName)) &&
                                     o.Status == "active")
                         .OrderBy(o => o.Name)
-                        .Include(o => o.User)
+                        .Include(o => o.ModifiedByUser)
                         .ToList();
                     if (model.Resources.Count < 1)
                         model.Resources = null;
@@ -104,7 +104,7 @@ namespace RBEPortal.Controllers {
                     model.Resources = session.RBEPortalData.Resources
                         .Where(o => o.Status == "active")
                         .OrderBy(o => o.Name)
-                        .Include(o => o.User)
+                        .Include(o => o.ModifiedByUser)
                         .ToList();
                 }
             }
@@ -153,7 +153,21 @@ namespace RBEPortal.Controllers {
             var model = new DisplayResourceModel();
 
             using (var session = new RBEPortalServer.RBEPortalContext()) {
-                model.Resource = session.RBEPortalData.Resources.Single(o => o.ResourceId == resourceId);
+                model.Resource = session.RBEPortalData.Resources
+                    .Include(o => o.ModifiedByUser)
+                    .Single(o => o.ResourceId == resourceId);
+
+                model.Resource.Requests = session.RBEPortalData.Requests
+                    .Where(o => o.ResourceId == resourceId && o.Status == "active")
+                    .OrderBy(o => o.Location)
+                    .Include(o => o.User)
+                    .ToList();
+
+                model.Resource.Shares = session.RBEPortalData.Shares
+                    .Where(o => o.ResourceId == resourceId && o.Status == "active")
+                    .OrderBy(o => o.Location)
+                    .Include(o => o.User)
+                    .ToList();
             }
 
             return View("DisplayResource", model);
@@ -210,6 +224,150 @@ namespace RBEPortal.Controllers {
             }
 
             return NewSearch();
+        }
+
+        public ActionResult NewRequest(Guid resourceId) {
+            var model = new RequestModel();
+
+            using (var session = new RBEPortalServer.RBEPortalContext()) {
+                var resource = session.RBEPortalData.Resources.Single(o => o.ResourceId == resourceId);
+
+                model.Request = new Request {
+                    ResourceId = resourceId,
+                    Resource = resource,
+                };
+            }
+
+            return View("CreateRequest", model);
+        }
+
+        public ActionResult SaveRequest(RequestModel model) {
+            if (!User.Identity.IsAuthenticated)
+                return View("NotLogged");
+
+            model.Request.Location = HttpUtility.HtmlDecode(model.Request.Location);
+
+            using (var session = new RBEPortalServer.RBEPortalContext()) {
+                var userId = session.RBEPortalData.Users.Where(o => o.LoweredUserName == User.Identity.Name.ToLower()).Select(o => o.UserId).Single();
+
+                Request request;
+                if (model.Request.RequestId == Guid.Empty)
+                    request = null;
+                else
+                    request = session.RBEPortalData.Requests.SingleOrDefault(o => o.RequestId == model.Request.RequestId);
+
+                if (request == null) {
+                    request = new Request {
+                        RequestId = Guid.NewGuid(),
+                        ResourceId = model.Request.ResourceId,
+                        UserId = userId,
+                        Status = "active",
+                        CreationDate = DateTime.Now,
+                    };
+                    session.RBEPortalData.Requests.Add(request);
+                }
+
+                request.Amount = model.Request.Amount;
+                request.UoM = model.Request.UoM;
+                request.Location = model.Request.Location;
+                request.ModifiedDate = DateTime.Now;
+                request.ModifiedBy = userId;
+
+                session.RBEPortalData.SaveChanges();
+            }
+
+            return DisplayResource(model.Request.ResourceId);
+        }
+
+        public ActionResult DeleteRequest(Guid requestId) {
+            if (!User.Identity.IsAuthenticated)
+                return View("NotLogged");
+
+            Request request;
+            using (var session = new RBEPortalServer.RBEPortalContext()) {
+                var userId = session.RBEPortalData.Users.Where(o => o.LoweredUserName == User.Identity.Name.ToLower()).Select(o => o.UserId).Single();
+                request = session.RBEPortalData.Requests.Single(o => o.RequestId == requestId);
+
+                request.Status = "deleted";
+                request.ModifiedDate = DateTime.Now;
+                request.ModifiedBy = userId;
+
+                session.RBEPortalData.SaveChanges();
+            }
+
+            return DisplayResource(request.ResourceId);
+        }
+
+        public ActionResult NewShare(Guid resourceId) {
+            var model = new ShareModel();
+
+            using (var session = new RBEPortalServer.RBEPortalContext()) {
+                var resource = session.RBEPortalData.Resources.Single(o => o.ResourceId == resourceId);
+
+                model.Share = new Share {
+                    ResourceId = resourceId,
+                    Resource = resource,
+                };
+            }
+
+            return View("CreateShare", model);
+        }
+
+        public ActionResult SaveShare(ShareModel model) {
+            if (!User.Identity.IsAuthenticated)
+                return View("NotLogged");
+
+            model.Share.Location = HttpUtility.HtmlDecode(model.Share.Location);
+
+            using (var session = new RBEPortalServer.RBEPortalContext()) {
+                var userId = session.RBEPortalData.Users.Where(o => o.LoweredUserName == User.Identity.Name.ToLower()).Select(o => o.UserId).Single();
+
+                Share share;
+                if (model.Share.ShareId == Guid.Empty)
+                    share = null;
+                else
+                    share = session.RBEPortalData.Shares.SingleOrDefault(o => o.ShareId == model.Share.ShareId);
+
+                if (share == null) {
+                    share = new Share {
+                        ShareId = Guid.NewGuid(),
+                        ResourceId = model.Share.ResourceId,
+                        UserId = userId,
+                        Status = "active",
+                        CreationDate = DateTime.Now,
+                    };
+                    session.RBEPortalData.Shares.Add(share);
+                }
+
+                share.Amount = model.Share.Amount;
+                share.UoM = model.Share.UoM;
+                share.Location = model.Share.Location;
+                share.ModifiedDate = DateTime.Now;
+                share.ModifiedBy = userId;
+
+                session.RBEPortalData.SaveChanges();
+            }
+
+            return DisplayResource(model.Share.ResourceId);
+        }
+
+        public ActionResult DeleteShare(Guid shareId) {
+            if (!User.Identity.IsAuthenticated)
+                return View("NotLogged");
+
+            Share share;
+            using (var session = new RBEPortalServer.RBEPortalContext()) {
+                var userId = session.RBEPortalData.Users.Where(o => o.LoweredUserName == User.Identity.Name.ToLower()).Select(o => o.UserId).Single();
+                share = session.RBEPortalData.Shares.Single(o => o.ShareId == shareId);
+
+                share.Status = "deleted";
+                share.ModifiedDate = DateTime.Now;
+                share.ModifiedBy = userId;
+
+                session.RBEPortalData.SaveChanges();
+            }
+
+            return DisplayResource(share.ResourceId);
         }
     }
 }
